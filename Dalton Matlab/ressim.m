@@ -42,14 +42,15 @@ kinit = zeros(1, ncells);
 
 for i = 1: ny
     for j = 1: nx
-        P(1, ((i-1) .* ny) + j) = p0;
+        P(1, ((i-1) .* ny) + j) = p0 + ((((i-1) .* nx) + j) .* 10);
         Pold(1, ((i-1) .* ny) + j) = p0 + 100;
         kinit(1, ((i-1) .* ny) + j) = k0;
     end
 end
 
 
-[residx, jacobx] = discretize(P, Pold, dt, p0, phi0, b0, cr, cf, visc, kinit, x, y, nx, ny, nfaces)
+[resid, jacob] = discretize(P, Pold, dt, p0, phi0, b0, cr, cf, visc, kinit, x, y, nx, ny, nfaces);
 
-
+resid
+jacob
 
