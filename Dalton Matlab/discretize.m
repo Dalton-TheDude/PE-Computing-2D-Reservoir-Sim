@@ -8,7 +8,7 @@ dx = x ./ nx;
 dy = y ./ ny;
 ncells = nx .* ny;
 
-kh_avg = 0.00112712 .* (2 .* (kinit(conn_list(:, 1)) .* kinit(conn_list(:, 2)))) ./ (kinit(conn_list(:, 1)) + kinit(conn_list(:, 2)));
+kh_avg = 0.00112712 .* ((2 .* (kinit(conn_list(:, 1)) .* kinit(conn_list(:, 2)))) ./ (kinit(conn_list(:, 1)) + kinit(conn_list(:, 2))));
 pot_diff = P(conn_list(:, 2)) - P(conn_list(:, 1));
 trans_avg = 0.5 .* ((trans(conn_list(:, 1)) + trans(conn_list(:, 2))));
 
