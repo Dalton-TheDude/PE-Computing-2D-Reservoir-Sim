@@ -61,19 +61,19 @@ conn_list = connection_list(nx, ny);
 
  while (time <= t_final)
 
-      resid = resid + well_info;
-      b = (P(:, 1) + (dt .* well_info(:, 1))) - resid;
+     
+      b = (P(:, 1) + (dt .* well_info(:, 1)));
      
      count = 1;
-     
+%      [resid, jacob] = discretize(P, Pold, dt, p0, phi0, b0, cr, cf, visc, kinit, x, y, nx, ny, conn_list);
+     resid = resid + well_info;
 %      while sum(abs(resid(:, 1))) > sum_tol
          if count > iter
             break
          end
          Pold = P;
          P = Pold - (jacob\resid);
-%          [resid, jacob] = discretize(P, Pold, dt, p0, phi0, b0, cr, cf, visc, kinit, x, y, nx, ny, conn_list);
-
+%          [resid, jac2] = discretize(P, Pold, dt, p0, phi0, b0, cr, cf, visc, kinit, x, y, nx, ny, conn_list);
          count = count + 1;
 %      end
      time = time + dt;
