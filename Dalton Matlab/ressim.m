@@ -9,11 +9,11 @@ ncells =    nx .* ny;
 
 % Time Stuff
 time =      1;
-t_final =   10;             %days
-dt =        0.01;              %time step size in days
+t_final =   50;             %days
+dt =        0.1;              %time step size in days
 nsteps =    t_final ./ dt;   %total number of time steps
 iter =      15;             %number of iterations allowed per time step
-tol =       0.01;           % Tolerance in each cell
+tol =       0.0001;           % Tolerance in each cell
 sum_tol =   tol .* ncells;  % Sum of the tolerances in each cell
 
 % Formation properties
@@ -21,12 +21,12 @@ p0 =        3000;           %initial pressure (psi)
 cr =        1.0e-5;        %1/psi
 cf =        1.0e-4;         %1/psi
 visc =      2.5;            %cP
-k0 =        0.1 + (100 - 0.1) .* rand(nx .* ny,1);            %mD
-phi0 =      0.1 + (0.3 - 0.1) .* rand(nx .* ny,1);            %porosity
+k0 =        0.1 + (100 - 0.1) .* ones(nx .* ny,1);            %mD
+phi0 =      0.1 + (0.3 - 0.1) .* ones(nx .* ny,1);            %porosity
 b0 =        1.2;            %resb/stb
 
 % Well stuff
-well_list = [70, 50];       % Location (cell #), STB/d 
+well_list = [70, 50; 530, 50; 545, 50; 55, 50; 313, 500];       % Location (cell #), STB/d 
 Nwells = size(well_list, 1);
 Pwf = zeros(nsteps, Nwells);
 

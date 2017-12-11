@@ -7,22 +7,20 @@ accumold = accum_calcs(Pold, p0, phi0, b0, cr, cf);
 ncells = nx .* ny;
 n_vert = (nx - 1) .* ny;
 nfaces = n_vert + ((ny - 1) .* nx);
-dt_dx(1:n_vert, 1) = dt ./ (dx .^ 2);
-dt_dy(n_vert+1:nfaces, 1) = dt ./ (dy .^ 2);
 
 kh_avg = 0.00112712 .* (dx ./ dy) .* ((2 .* (kinit(conn_list(:, 1)) .* kinit(conn_list(:, 2)))) ./ (kinit(conn_list(:, 1)) + kinit(conn_list(:, 2))));
 pot_diff = P(conn_list(:, 2)) - P(conn_list(:, 1));
 trans_avg = 0.5 .* ((trans(conn_list(:, 1)) + trans(conn_list(:, 2))));
 
-d_DP_dl   = - ones(nfaces);
-d_DP_dr   = ones(nfaces);
+d_DP_dl   = - ones(nfaces, 1);
+d_DP_dr   = ones(nfaces, 1);
 
 d_T_dl = 0.5 .* d_trans(conn_list(:,1));
 d_T_dr = 0.5 .* d_trans(conn_list(:,2));
 
 flux = kh_avg(1:end) .* pot_diff(1:end) .* trans_avg(1:end);
-df_dpr = dt .* (kh_avg(1:end) .* ((d_trans(conn_list(:, 2)) .* pot_diff(1:end)) + (trans_avg(1:end) .* d_DP_dr)));
-df_dpl = dt .* (kh_avg(1:end) .* ((d_trans(conn_list(:, 1)) .* pot_diff(1:end)) + (trans_avg(1:end) .* d_DP_dl)));
+df_dpr = dt .* (kh_avg(1:end) .* ((d_T_dr(1:end) .* pot_diff(1:end)) + (trans_avg(1:end) .* d_DP_dr)));
+df_dpl = dt .* (kh_avg(1:end) .* ((d_T_dr(1:end) .* pot_diff(1:end)) + (trans_avg(1:end) .* d_DP_dl)));
 
 % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % 
 % Residual and Jacobian creation
