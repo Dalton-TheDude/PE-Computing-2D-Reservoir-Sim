@@ -19,14 +19,13 @@ d_T_dl = 0.5 .* d_trans(conn_list(:,1));
 d_T_dr = 0.5 .* d_trans(conn_list(:,2));
 
 flux = kh_avg(1:end) .* pot_diff(1:end) .* trans_avg(1:end);
-df_dpr = dt .* (kh_avg(1:end) .* ((d_T_dr(1:end) .* pot_diff(1:end)) + (trans_avg(1:end) .* d_DP_dr)));
-df_dpl = dt .* (kh_avg(1:end) .* ((d_T_dr(1:end) .* pot_diff(1:end)) + (trans_avg(1:end) .* d_DP_dl)));
+df_dpr = dt .* (kh_avg(1:end) .* ((d_T_dr(1:end) .* pot_diff(1:end)) + (trans_avg(1:end))));
+df_dpl = dt .* (kh_avg(1:end) .* ((d_T_dl(1:end) .* pot_diff(1:end)) - (trans_avg(1:end))));
 
 % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % 
 % Residual and Jacobian creation
 
 
-% resid = accum - accumold - (cell_flux(1:end)) - (dt .* well_info(1:end));
 resid = ((0.1781076 .* dx .* dy) .* (accum - accumold)) + (dt .* well_info);
 jacob = zeros(ncells, ncells);
 
@@ -34,26 +33,9 @@ counter = 0;
 for i = 1: ny
     for k = 1: nx
     counter = counter + 1;
-%     counter_horizr = n_vert + ((k - 1) .* (ny - 1)) + i;
-%     counter_horizl = n_vert + ((k - 1) .* (ny - 1)) + i - 1;
+
     jacob(counter, counter) = (0.1781076 .* dx .* dy) .* d_accum(counter);
-%     
-%     if k > 1
-%         jacob(counter, counter - 1) = -df_dpl(((i-1) .* (nx - 1)) + k - 1);        
-%     end
-%     
-%     if k < nx
-%         jacob(counter, counter + 1) = -df_dpr(((i-1) .* (nx - 1)) + k); 
-%     end
-%     
-%     if counter <= (ncells - nx)
-%         jacob(counter, counter + nx) = -df_dpr(counter_horizr);
-%     end
-%     
-%     if counter > nx
-%         jacob(counter, counter - nx) = -df_dpl(counter_horizl);
-%     end
-%     
+
     end
 end
 
